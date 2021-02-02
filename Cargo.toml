@@ -8,5 +8,11 @@ name = "vcell"
 repository = "https://github.com/japaric/vcell"
 version = "0.1.3"
 
+[dependencies.klee-sys]
+version = "0.2.0"
+git = "https://gitlab.henriktjader.com/pln/klee-sys.git"
+optional = true
+
 [features]
 const-fn = [] # Unused, but kept for backwards compatibility
+klee-analysis = [ "klee-sys/klee-analysis" ]
