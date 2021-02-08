@@ -3,8 +3,8 @@
 //! [`Cell`]: https://doc.rust-lang.org/std/cell/struct.Cell.html
 //! [volatile]: https://doc.rust-lang.org/std/ptr/fn.read_volatile.html
 
-#![deny(missing_docs)]
-#![deny(warnings)]
+//#![deny(missing_docs)]
+//#![deny(warnings)]
 #![no_std]
 
 use core::cell::UnsafeCell;
@@ -77,14 +77,13 @@ impl<T> VolatileCell<T> {
         T: Copy,
     {
         let mut symbolic_value = unsafe { core::mem::MaybeUninit::uninit().assume_init() };
-
         klee_make_symbolic!(&mut symbolic_value, "vcell");
         symbolic_value
     }
 
     /// Sets the contained value
     #[inline(always)]
-    pub fn set(&self, value: T)
+    pub fn set(&self, _value: T)
     where
         T: Copy,
     {
@@ -93,6 +92,8 @@ impl<T> VolatileCell<T> {
     /// Returns a raw pointer to the underlying data in the cell
     #[inline(always)]
     pub fn as_ptr(&self) -> *mut T {
-        self.value.get()
+        let mut symbolic_value = unsafe { core::mem::MaybeUninit::uninit().assume_init() };
+        klee_make_symbolic!(&mut symbolic_value, "vcell_ptr");
+        symbolic_value
     }
 }
