@@ -123,9 +123,8 @@ impl<T> VolatileCell<T> {
     where
         T: Copy,
     {
-        let r = unsafe { ptr::read_volatile(self.value.get()) };
         asm::bkpt_imm(5);
-        r
+        unsafe { ptr::read_volatile(self.value.get()) }
     }
 
     /// Sets the contained value
@@ -140,8 +139,7 @@ impl<T> VolatileCell<T> {
     /// Returns a raw pointer to the underlying data in the cell
     #[inline(always)]
     pub fn as_ptr(&self) -> *mut T {
-        let r = self.value.get();
         asm::bkpt_imm(5);
-        r
+        self.value.get()
     }
 }
